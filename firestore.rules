@@ -1,0 +1,132 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidBook(data, userId, bookId) {
+      return data.keys().hasAll(['id', 'ownerId', 't', 'status', 'rt', 'pt', 'pg', 'ts', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['id', 'ownerId', 't', 'a', 'g', 'tp', 'y', 'status', 'rt', 'pt', 'pg', 'nt', 'img', 'pdf', 'ts', 'createdAt', 'updatedAt'])
+        && data.id is string && data.id == bookId
+        && data.ownerId is string && data.ownerId == userId && data.ownerId == request.auth.uid
+        && data.t is string && data.t.size() >= 1 && data.t.size() <= 300
+        && (!('a' in data) || (data.a is string && data.a.size() <= 200))
+        && (!('g' in data) || (data.g is string && data.g.size() <= 100))
+        && (!('tp' in data) || (data.tp is string && data.tp.size() <= 100))
+        && (!('y' in data) || (data.y is string && data.y.size() <= 32))
+        && data.status is string && data.status in ['', 'want', 'reading', 'read']
+        && data.rt is number && data.rt >= 0 && data.rt <= 5
+        && data.pt is number && data.pt >= 0 && data.pt <= 100000
+        && data.pg is number && data.pg >= 0 && data.pg <= 100000
+        && (!('nt' in data) || (data.nt is string && data.nt.size() <= 5000))
+        && (!('img' in data) || (data.img is string && data.img.size() <= 250000))
+        && (!('pdf' in data) || (data.pdf is string && data.pdf.size() <= 2048))
+        && data.ts is number && data.ts >= 0
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidLibraryMeta(data, userId) {
+      return data.keys().hasAll(['ownerId', 'gx', 'tp', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['ownerId', 'gx', 'tp', 'createdAt', 'updatedAt'])
+        && data.ownerId is string && data.ownerId == userId && data.ownerId == request.auth.uid
+        && data.gx is list && data.gx.size() <= 100
+        && (data.gx.size() == 0 || (data.gx[0] is string && data.gx[0].size() <= 100))
+        && data.tp is map && data.tp.size() <= 100
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidDiaryPage(data, userId, pageId) {
+      return data.keys().hasAll(['id', 'ownerId', 'date', 'mood', 'text', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['id', 'ownerId', 'date', 'time', 'mood', 'title', 'text', 'createdAt', 'updatedAt'])
+        && data.id is string && data.id == pageId
+        && data.ownerId is string && data.ownerId == userId && data.ownerId == request.auth.uid
+        && data.date is string && data.date.size() >= 4 && data.date.size() <= 20
+        && (!('time' in data) || (data.time is string && data.time.size() <= 10))
+        && data.mood is string && data.mood in ['good', 'happy', 'normal', 'bad', 'sad', 'rainy', 'worst', 'best']
+        && (!('title' in data) || (data.title is string && data.title.size() <= 300))
+        && data.text is string && data.text.size() >= 1 && data.text.size() <= 50000
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    match /users/{userId}/books/{bookId} {
+      allow get: if isOwner(userId) && isValidId(userId) && isValidId(bookId);
+      allow list: if isOwner(userId) && isValidId(userId) && existing().ownerId == request.auth.uid;
+      allow create: if isOwner(userId) && isValidId(userId) && isValidId(bookId)
+        && isValidBook(incoming(), userId, bookId)
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+      allow update: if isOwner(userId) && isValidId(userId) && isValidId(bookId)
+        && isValidBook(incoming(), userId, bookId)
+        && incoming().id == existing().id
+        && incoming().ownerId == existing().ownerId
+        && incoming().ts == existing().ts
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && (
+          incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt']) ||
+          incoming().diff(existing()).affectedKeys().hasOnly(['t', 'a', 'g', 'tp', 'y', 'status', 'rt', 'pt', 'pg', 'nt', 'img', 'pdf', 'updatedAt'])
+        );
+      allow delete: if isOwner(userId) && isValidId(userId) && isValidId(bookId)
+        && existing().ownerId == request.auth.uid;
+    }
+
+    match /users/{userId}/meta/{metaId} {
+      allow get: if isOwner(userId) && isValidId(userId) && metaId == 'library';
+      allow list: if isOwner(userId) && isValidId(userId) && existing().ownerId == request.auth.uid;
+      allow create: if isOwner(userId) && isValidId(userId) && metaId == 'library'
+        && isValidLibraryMeta(incoming(), userId)
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+      allow update: if isOwner(userId) && isValidId(userId) && metaId == 'library'
+        && isValidLibraryMeta(incoming(), userId)
+        && incoming().ownerId == existing().ownerId
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly(['gx', 'tp', 'updatedAt']);
+      allow delete: if isOwner(userId) && isValidId(userId) && metaId == 'library'
+        && existing().ownerId == request.auth.uid;
+    }
+
+    match /users/{userId}/diary/{pageId} {
+      allow get: if isOwner(userId) && isValidId(userId) && isValidId(pageId);
+      allow list: if isOwner(userId) && isValidId(userId) && existing().ownerId == request.auth.uid;
+      allow create: if isOwner(userId) && isValidId(userId) && isValidId(pageId)
+        && isValidDiaryPage(incoming(), userId, pageId)
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+      allow update: if isOwner(userId) && isValidId(userId) && isValidId(pageId)
+        && isValidDiaryPage(incoming(), userId, pageId)
+        && incoming().id == existing().id
+        && incoming().ownerId == existing().ownerId
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly(['date', 'time', 'mood', 'title', 'text', 'updatedAt']);
+      allow delete: if isOwner(userId) && isValidId(userId) && isValidId(pageId)
+        && existing().ownerId == request.auth.uid;
+    }
+  }
+}

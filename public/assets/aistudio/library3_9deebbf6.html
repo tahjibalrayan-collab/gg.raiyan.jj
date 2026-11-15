@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Al Thahazeeb Noor Rayan – Book List</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--mut:#777;--card:#fafafa;--line:#dcdcdc;--acc:#2f4a8a;--accfg:#fff;--g1:#ffe9d6;--g2:#fde2ee;--g3:#e4ecff;--g4:#dff5ea;--shelf:#f6f1ea;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17171a;--fg:#eee;--mut:#9a9a9a;--card:#222226;--line:#3a3a40;--acc:#9db8f5;--accfg:#111;--g1:#3a2c25;--g2:#3a2630;--g3:#242b40;--g4:#223a30;--shelf:#201e1b}}
+:root[data-theme="dark"]{--bg:#17171a;--fg:#eee;--mut:#9a9a9a;--card:#222226;--line:#3a3a40;--acc:#9db8f5;--accfg:#111;--g1:#3a2c25;--g2:#3a2630;--g3:#242b40;--g4:#223a30;--shelf:#201e1b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--fg);font:13px/1.45 "Space Mono",ui-monospace,monospace}
+header{text-align:center;padding:40px 16px 14px;background:linear-gradient(135deg,var(--g1),var(--g2) 35%,var(--g3) 70%,var(--g4))}
+.tag{letter-spacing:.25em;font-size:10px;color:var(--mut);text-transform:uppercase}
+h1{font:italic 400 clamp(32px,7vw,60px)/1.08 "Cormorant Garamond",Georgia,serif;margin:12px 0 8px}
+#q{width:min(520px,92%);padding:10px 4px;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--fg);font:italic 22px "Cormorant Garamond",Georgia,serif;text-align:center;outline:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px auto;max-width:960px;padding:0 12px}
+.b{font:11px "Space Mono",monospace;cursor:pointer;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:6px 12px;text-transform:uppercase;letter-spacing:.06em;text-decoration:none}
+.b.on{background:var(--acc);color:var(--accfg);border-color:var(--acc)}
+.f{display:block;width:100%;font:13px "Space Mono",monospace;border:1px solid var(--line);padding:9px;margin:6px 0;background:var(--card);color:var(--fg);border-radius:8px}
+.shelf{display:flex;align-items:flex-end;gap:3px;overflow-x:auto;padding:26px 18px 0;min-height:240px;background:var(--shelf);border-bottom:12px solid #a07f52}
+.sp{writing-mode:vertical-rl;flex:none;color:#fff;padding:10px 4px;white-space:nowrap;overflow:hidden;border-radius:3px 3px 0 0;font:600 13px "Cormorant Garamond",Georgia,serif;cursor:pointer;transition:transform .15s}
+.sp:hover{transform:translateY(-8px)}
+#tip{position:fixed;z-index:50;background:#fbfaf6;color:#222;padding:10px 12px;width:220px;box-shadow:0 8px 24px rgba(0,0,0,.25);pointer-events:none;border-radius:3px}
+.tt{font:600 17px "Cormorant Garamond",Georgia,serif}.ta{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#2f4a8a;margin:3px 0}.tm{font-size:11px;color:#555}
+main{max-width:1000px;margin:0 auto;padding:8px 16px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:22px}
+.card{display:flex;flex-direction:column;gap:5px}
+.cover{aspect-ratio:2/3;border-radius:3px 8px 8px 3px;padding:12px 10px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;cursor:pointer;box-shadow:inset 6px 0 8px -4px rgba(0,0,0,.4),0 8px 16px -8px rgba(0,0,0,.45)}
+.cover b{font:600 19px/1.1 "Cormorant Garamond",Georgia,serif}.cover i{font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-style:normal;opacity:.85}
+.ti{font-weight:700;cursor:pointer}.meta{color:var(--mut);font-size:10px}.meta u{cursor:pointer;color:var(--acc)}
+.acts{display:flex;gap:4px;flex-wrap:wrap}.acts .b{padding:3px 8px;font-size:9px}
+.bar{height:4px;background:var(--line);border-radius:4px}.bar i{display:block;height:4px;background:var(--acc);border-radius:4px}
+.empty{grid-column:1/-1;text-align:center;color:var(--mut);padding:30px 0}
+dialog{background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:12px;width:min(520px,94vw);max-height:92vh}
+.row{display:flex;gap:8px}.wrap{max-width:900px;margin:0 auto;padding:0 14px 40px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0}
+.book{display:flex;align-items:center;gap:8px;background:#7a4b2a;padding:14px 10px;border-radius:14px;box-shadow:0 12px 28px -12px rgba(0,0,0,.5);margin-top:14px}
+.arr{border:0;background:rgba(255,255,255,.18);color:#fff;font-size:22px;width:42px;height:64px;border-radius:10px;cursor:pointer;flex:none}
+#dbook{flex:1;min-width:0}
+.dpg{background:#fffdf5;color:#3a2f1f;min-height:340px;padding:18px 20px 14px 34px;border-radius:4px 10px 10px 4px;border-left:4px double #d9c9a3;line-height:28px;background-image:repeating-linear-gradient(transparent,transparent 27px,#eadfc4 28px);transition:transform .23s ease,opacity .23s;transform-origin:left center}
+.dpg.outl{transform:perspective(1400px) rotateY(-80deg);opacity:.2}.dpg.outr{transform-origin:right center;transform:perspective(1400px) rotateY(80deg);opacity:.2}
+.dpg.inr{transform-origin:right center;transform:perspective(1400px) rotateY(80deg);opacity:.2}.dpg.inl{transform:perspective(1400px) rotateY(-80deg);opacity:.2}
+.dh{display:flex;justify-content:space-between;font-size:12px;color:#7a6a4d}.dpg h3{margin:0;font:600 24px/28px "Cormorant Garamond",serif}.dpg p{margin:0;white-space:pre-wrap;font-size:14px}
+</style></head><body>
+<header>
+<div class="tag">📚 A personal archive</div>
+<h1>Made by Al Thahazeeb Noor Rayan · Book List 📖</h1>
+<div class="tag" id="sync"></div>
+<div class="chips"><button class="b on" data-v="lib">📚 Library</button><button class="b" data-v="diary">📓 Diary</button></div>
+</header>
+<section id="lib">
+<div style="text-align:center;margin-top:14px"><div class="tag" id="st"></div>
+<input id="q" placeholder="What are you looking for?" autocomplete="off"></div>
+<div class="chips" id="gs"></div><div class="chips" id="tps"></div><div class="chips" id="tabs"></div>
+<div class="shelf" id="shelf"></div>
+<div class="chips"><button class="b" id="ab">➕ Add book</button><button class="b" id="bl">📥 Bulk add</button><button class="b" id="bk">💾 Backup</button><button class="b" id="rs">♻️ Restore</button><button class="b" id="dd">🧹 Remove duplicates</button><select class="b" id="so"><option value="new">Newest</option><option value="t">Title</option><option value="a">Author</option><option value="r">Rating</option></select></div>
+<main id="grid"></main>
+</section>
+<section id="diary" hidden><div class="wrap">
+<div class="chips" id="dfilt"></div>
+<div class="chips"><button class="b on" data-w="1">✍️ Write a new page</button></div>
+<div class="panel" id="dcomp" hidden><div class="row"><input type="date" id="ddate" class="f"><input type="time" id="dtime" class="f"></div>
+<div class="chips" id="dmoods"></div><input id="dtitle" class="f" placeholder="Title (optional)"><textarea id="dtext" class="f" rows="6" placeholder="Write about your day…"></textarea>
+<div class="chips"><button class="b on" id="dsv">💾 Save page</button><button class="b" id="dcl">Cancel</button></div></div>
+<div class="book"><button class="arr" data-flip="-1">◀</button><div id="dbook"></div><button class="arr" data-flip="1">▶</button></div>
+<div class="tag" style="text-align:center;margin-top:10px">Your diary is private to your account.</div></div></section>
+<div id="tip" hidden></div>
+<div id="toast" hidden style="position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:99px;z-index:60;font-size:12px;max-width:90vw;text-align:center"></div>
+<dialog id="dlg"><p class="meta" id="dh">Book</p>
+<input class="f" id="nt" placeholder="Title"><input class="f" id="na" placeholder="Author" list="al"><div class="row"><input class="f" id="ng" placeholder="Genre" list="gl"><input class="f" id="ntp" placeholder="Topic / type" list="tl"></div>
+<div class="row"><input class="f" id="ny" placeholder="Year"><select class="f" id="ns"><option value="want">🔖 Want to read</option><option value="reading">📖 Reading</option><option value="read">✅ Finished</option></select></div>
+<div class="row"><select class="f" id="nr"><option value="0">No rating</option><option value="1">★</option><option value="2">★★</option><option value="3">★★★</option><option value="4">★★★★</option><option value="5">★★★★★</option></select><input class="f" id="npt" type="number" min="0" placeholder="Total pages"><input class="f" id="np" type="number" min="0" placeholder="Pages read"></div>
+<textarea class="f" id="nn" rows="3" placeholder="Notes"></textarea>
+<datalist id="gl"></datalist><datalist id="tl"></datalist><datalist id="al"></datalist>
+<div class="chips" id="ext"></div>
+<div class="chips"><button class="b on" id="abok">Save</button><button class="b" id="abdel">Delete</button><button class="b" id="abx">Close</button></div></dialog>
+<dialog id="tx"><p class="meta" id="dt"></p><textarea class="f" id="ta" rows="10"></textarea><div class="chips"><button class="b on" id="dok">OK</button><button class="b" id="dx">Close</button></div></dialog>
+<script>
+const $=i=>document.getElementById(i);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const GEN=["Biography","Science","Romance","Fantasy","Mystery & Thriller","History","Philosophy","Horror","CSE","Fiction","Non-Fiction","Self-Help"];
+const MO=[["good","😊","Good day"],["happy","🥳","Happy day"],["normal","🙂","Normal day"],["bad","😕","Bad day"],["sad","😢","Sad day"],["rainy","🌧️","Rainy day"],["worst","💔","Worst day of my life"],["best","🌟","Best day of my life"]];
+const LBL={reading:"📖 Reading",want:"🔖 Want to read",read:"✅ Finished"};
+let B={},M={gx:[],tp:{History:["Islamic","Ottoman","World War I","World War II"]}},D=[];
+let view="lib",tab="all",gen="All",tpf="All",q="",sort="new",dm="All",cm="normal",dpi=0,eid=null,dEdit=null,pdfId=null,mode="";
+let DB=null,CAN=false,col=null,dcol=null;
+const CE=()=>!DB||CAN;
+const nid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const hue=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))%360;return h};
+try{const r=JSON.parse(localStorage.getItem("lib2")||"{}");B=r.B||B;M=r.M||M;D=r.D||D}catch(e){}
+const lsave=()=>{try{const b={};for(const k in B){const x={...B[k]};delete x.img;b[k]=x}localStorage.setItem("lib2",JSON.stringify({B:b,M,D:dcol?[]:D}))}catch(e){}};
+const saveB=id=>{lsave();if(DB&&CAN)col.doc(id).set({...B[id],custom:true}).catch(()=>{})};
+const saveM=()=>{lsave();if(DB&&CAN)col.doc("meta").set({meta:true,gx:M.gx,tp:M.tp}).catch(()=>{})};
+const dk=b=>String(b.t||"").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim()+"|"+String(b.a||"").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim();
+const wq=[];let wk=false;
+const qdo=async()=>{if(wk)return;wk=true;while(wq.length){const x=wq.splice(0,5);$("sync").textContent="Syncing… "+(wq.length+x.length)+" left";await Promise.all(x.map(f=>f().catch(()=>{})))}$("sync").textContent=$("sync").dataset.base||"";wk=false};
+const qset=f=>{wq.push(f);qdo()};
+const toast=t=>{const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,7000)};
+let LIM=60,rt,qt;const rq=()=>{clearTimeout(rt);rt=setTimeout(render,200)};
+const idb=()=>new Promise((res,rej)=>{const r=indexedDB.open("libpdf",1);r.onupgradeneeded=()=>r.result.createObjectStore("f");r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
+const idbPut=async(k,v)=>{const d=await idb();return new Promise((res,rej)=>{const t=d.transaction("f","readwrite");t.objectStore("f").put(v,k);t.oncomplete=res;t.onerror=()=>rej(t.error)})};
+const idbGet=async k=>{const d=await idb();return new Promise((res,rej)=>{const r=d.transaction("f").objectStore("f").get(k);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})};
+const idbDel=async k=>{const d=await idb();d.transaction("f","readwrite").objectStore("f").delete(k)};
+const pdfBtn=b=>b.pdf=="local"?`<button class="b" data-o="${b.id}">📄 PDF</button>`:b.pdf?`<a class="b" href="${esc(b.pdf)}" target="_blank" rel="noopener">📄 PDF</a>`:"";
+
+function render(){
+ const L=Object.values(B),f=x=>L.filter(b=>b.status==x).length;
+ $("st").textContent=`${L.length} volumes · ${f("reading")} reading · ${f("want")} to read · ${f("read")} finished`;
+ const gs=["All",...new Set([...GEN,...M.gx,...L.map(b=>b.g).filter(Boolean)])];
+ $("gs").innerHTML=gs.map(g=>{const n=L.filter(b=>b.g==g).length;return `<button class="b ${g==gen?"on":""}" data-g="${esc(g)}">${esc(g)}${n?" · "+n:""}</button>`}).join("")+`<button class="b" data-ag="1">➕ Genre</button>`;
+ if(gen=="All")$("tps").innerHTML="";else{
+  const ts=[...new Set([...(M.tp[gen]||[]),...L.filter(b=>b.g==gen).map(b=>b.tp).filter(Boolean)])];
+  $("tps").innerHTML=`<button class="b ${tpf=="All"?"on":""}" data-tp="All">All ${esc(gen)}</button>`+ts.map(t=>`<button class="b ${tpf==t?"on":""}" data-tp="${esc(t)}">${esc(t)} · ${L.filter(b=>b.g==gen&&b.tp==t).length}</button>`).join("")+`<button class="b" data-at="1">➕ Topic</button>`}
+ $("tabs").innerHTML=[["all","📚 All"],["want","🔖 Want to read"],["reading","📖 Reading"],["read","✅ Finished"]].map(([k,l])=>`<button class="b ${k==tab?"on":""}" data-t="${k}">${l}</button>`).join("");
+ const ql=q.toLowerCase();
+ const list=L.filter(b=>(tab=="all"||b.status==tab)&&(gen=="All"||b.g==gen)&&(tpf=="All"||b.tp==tpf)&&(!ql||[b.t,b.a,b.g,b.tp].join(" ").toLowerCase().includes(ql)));
+ list.sort((a,b)=>sort=="t"?a.t.localeCompare(b.t):sort=="a"?(a.a||"~").localeCompare(b.a||"~"):sort=="r"?(b.rt||0)-(a.rt||0):(b.ts||0)-(a.ts||0));
+ $("shelf").innerHTML=list.length?list.slice(0,80).map(b=>{const c=hue(b.g||b.t),h=150+(b.t.length*13+c)%70,w=30+(b.t.length*3)%16;return `<div class="sp" data-e="${b.id}" style="background:linear-gradient(90deg,hsl(${c} 42% 42%),hsl(${c} 45% 32%));height:${h}px;width:${w}px">${esc(b.t)}</div>`}).join(""):`<div class="empty" style="width:100%">📚 Your shelf is empty. Tap “➕ Add book” to start.</div>`;
+ $("grid").innerHTML=list.length?list.slice(0,LIM).map(b=>{const c=hue(b.g||b.t),s=b.status;
+  const cv=b.img?`background:url(${b.img}) center/cover`:`background:linear-gradient(160deg,hsl(${c} 42% 42%),hsl(${(c+25)%360} 45% 26%))`;
+  return `<div class="card"><div class="cover" data-e="${b.id}" style="${cv}">${b.img?"":`<i>${esc(b.g||"")}</i><b>${esc(b.t)}</b><i>${esc(b.a||"")}</i>`}</div>
+  <div class="ti" data-e="${b.id}">${esc(b.t)}</div>
+  <div class="meta">${b.a?esc(b.a):`<u data-e="${b.id}">+ add author</u>`}${b.y?" · "+esc(b.y):""}</div>
+  <div class="meta">${esc(b.g||"")}${b.tp?" › "+esc(b.tp):""}</div>${b.rt?`<div class="meta">${"★".repeat(b.rt)}</div>`:""}
+  ${b.pt?`<div class="bar"><i style="width:${Math.min(100,(b.pg||0)/b.pt*100)}%"></i></div><div class="meta">p. ${b.pg||0} / ${b.pt}</div>`:""}
+  <div class="acts">${CE()?Object.keys(LBL).map(k=>`<button class="b ${s==k?"on":""}" data-id="${b.id}" data-s="${k}">${LBL[k]}</button>`).join(""):""}${pdfBtn(b)}</div></div>`}).join(""):"";
+ if(list.length>LIM)$("grid").insertAdjacentHTML("beforeend",`<div class="empty"><button class="b" data-more="1">Show more (${list.length-LIM} left)</button></div>`);
+ if(list.length<L.length||list.length>LIM)$("st").textContent+=` · showing ${Math.min(LIM,list.length)} of ${list.length}`;
+}
+const tip=$("tip");
+$("shelf").addEventListener("mouseover",e=>{const s=e.target.closest(".sp"),b=s&&B[s.dataset.e];if(!b){tip.hidden=true;return}
+ tip.innerHTML=`<div class="tt">${esc(b.t)}</div><div class="ta">${esc(b.a||"Author unknown")}</div><div class="tm">${esc(b.g||"")}${b.tp?" › "+esc(b.tp):""}${b.y?" · "+esc(b.y):""}</div><div class="tm">${esc(LBL[b.status]||"")}${b.rt?" · "+"★".repeat(b.rt):""}${b.pt?" · p. "+(b.pg||0)+"/"+b.pt:""}</div>`;tip.hidden=false});
+$("shelf").addEventListener("mousemove",e=>{tip.style.left=Math.min(e.clientX+14,innerWidth-235)+"px";tip.style.top=Math.max(e.clientY-100,8)+"px"});
+$("shelf").addEventListener("mouseleave",()=>tip.hidden=true);
+
+function openE(id){
+ eid=id;const b=id?B[id]:{},V=Object.values(B);
+ $("gl").innerHTML=[...new Set([...GEN,...M.gx,...V.map(x=>x.g)])].filter(Boolean).map(v=>`<option value="${esc(v)}">`).join("");
+ $("tl").innerHTML=[...new Set(Object.values(M.tp).flat().concat(V.map(x=>x.tp)))].filter(Boolean).map(v=>`<option value="${esc(v)}">`).join("");
+ $("al").innerHTML=[...new Set(V.map(x=>x.a).filter(Boolean))].map(v=>`<option value="${esc(v)}">`).join("");
+ $("dh").textContent=id?"✏️ Edit book":"➕ Add a book";
+ $("nt").value=b.t||"";$("na").value=b.a||"";$("ng").value=b.g||(gen!="All"?gen:"");$("ntp").value=b.tp||(tpf!="All"?tpf:"");$("ny").value=b.y||"";$("ns").value=b.status||"want";$("nr").value=b.rt||0;$("npt").value=b.pt||"";$("np").value=b.pg||"";$("nn").value=b.nt||"";
+ $("abdel").hidden=!id;
+ $("ext").innerHTML=id&&CE()?`<button class="b" id="abimg">🖼️ ${b.img?"Change cover":"Add cover photo"}</button><button class="b" id="abpdf">📄 ${b.pdf?"Replace PDF":"Add PDF"}</button>${pdfBtn(b)}`:"";
+ $("dlg").showModal();
+}
+$("abok").onclick=()=>{if(!CE())return;const t=$("nt").value.trim();if(!t)return;const id=eid||nid();const o=B[id]||{id,ts:Date.now()};
+ Object.assign(o,{t,a:$("na").value.trim(),g:$("ng").value.trim(),tp:$("ntp").value.trim(),y:$("ny").value.trim(),status:$("ns").value,rt:+$("nr").value,pt:+$("npt").value||0,pg:+$("np").value||0,nt:$("nn").value});B[id]=o;
+ if(o.g&&o.tp){M.tp[o.g]=M.tp[o.g]||[];if(!M.tp[o.g].includes(o.tp)){M.tp[o.g].push(o.tp);saveM()}}
+ saveB(id);$("dlg").close();render()};
+$("abdel").onclick=()=>{if(!CE()||!eid||!confirm("Delete this book?"))return;delete B[eid];idbDel("img:"+eid).catch(()=>{});lsave();if(DB&&CAN)col.doc(eid).delete().catch(()=>{});$("dlg").close();render()};
+$("abx").onclick=()=>$("dlg").close();
+$("ab").onclick=()=>CE()&&openE(null);
+const fi=document.createElement("input");fi.type="file";fi.accept="image/*";fi.hidden=true;document.body.appendChild(fi);
+fi.onchange=()=>{const f=fi.files[0];if(!f||!eid)return;const id=eid,im=new Image();im.onload=()=>{const c=document.createElement("canvas");c.width=240;c.height=360;const x=c.getContext("2d"),r=Math.max(240/im.width,360/im.height),w=im.width*r,h=im.height*r;x.drawImage(im,(240-w)/2,(360-h)/2,w,h);B[id].img=c.toDataURL("image/jpeg",.8);idbPut("img:"+id,B[id].img).catch(()=>{});saveB(id);render();openE(id);fi.value=""};im.src=URL.createObjectURL(f)};
+const pf=document.createElement("input");pf.type="file";pf.accept="application/pdf";pf.hidden=true;document.body.appendChild(pf);
+pf.onchange=async()=>{const f=pf.files[0];if(!f||!pdfId)return;const id=pdfId;let ok=false;
+ try{if(DB&&CAN){const A=await claude.use("assets");if(A){const r=await A.upload(f);B[id].pdf=r.url;ok=true}}}catch(e){}
+ if(!ok){try{await idbPut(id,f);B[id].pdf="local";ok=true}catch(e){alert("Could not save this PDF")}}
+ if(ok){saveB(id);render();openE(id)}pf.value=""};
+
+const dsort=()=>D.slice().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+const dlist=()=>dsort().filter(e=>dm=="All"||e.mood==dm);
+const flip=d=>{const l=dlist(),n=dpi+d;if(n<0||n>=l.length)return;const p=document.querySelector(".dpg");if(!p){dpi=n;renderD();return}p.classList.add(d>0?"outl":"outr");setTimeout(()=>{dpi=n;renderD();const g=document.querySelector(".dpg");g.classList.add(d>0?"inr":"inl");requestAnimationFrame(()=>requestAnimationFrame(()=>g.classList.remove("inr","inl")))},230)};
+document.addEventListener("keydown",e=>{if(view=="diary"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){if(e.key=="ArrowRight")flip(1);if(e.key=="ArrowLeft")flip(-1)}});
+document.addEventListener("click",e=>{const t=e.target.closest("[data-v],[data-g],[data-tp],[data-t],[data-s],[data-e],[data-ag],[data-at],[data-o],[data-m],[data-dm],[data-de],[data-dd],[data-flip],[data-w],[data-more],#abimg,#abpdf");if(!t)return;const d=t.dataset;
+ if(d.v){view=d.v;$("lib").hidden=view!="lib";$("diary").hidden=view!="diary";document.querySelectorAll("[data-v]").forEach(x=>x.classList.toggle("on",x.dataset.v==view))}
+ else if(d.g){gen=d.g;tpf="All";LIM=60}else if(d.tp){tpf=d.tp;LIM=60}else if(d.t){tab=d.t;LIM=60}else if(d.more){LIM+=60}
+ else if(d.s){if(!CE())return;const b=B[d.id];b.status=b.status==d.s?"":d.s;saveB(d.id)}
+ else if(d.e){openE(d.e);return}
+ else if(d.ag!==undefined){const n=prompt("New genre name");if(!n||!CE())return;M.gx.push(n.trim());saveM();gen=n.trim();tpf="All"}
+ else if(d.at!==undefined){const n=prompt("New topic in "+gen);if(!n||!CE())return;(M.tp[gen]=M.tp[gen]||[]).push(n.trim());saveM();tpf=n.trim()}
+ else if(d.o){idbGet(d.o).then(f=>{if(!f){alert("This PDF is saved only on the device where it was added.");return}const a=document.createElement("a");a.href=URL.createObjectURL(f);a.target="_blank";a.download="book.pdf";a.click()});return}
+ else if(t.id=="abimg"){fi.click();return}else if(t.id=="abpdf"){pdfId=eid;pf.click();return}
+ else if(d.flip){flip(+d.flip);return}
+ else if(d.w!==undefined){clearD();$("dcomp").hidden=false}
+ else if(d.m){cm=d.m}else if(d.dm){dm=d.dm;dpi=0}
+ else if(d.de){const x=D.find(y=>y.id==d.de);dEdit=x.id;$("ddate").value=x.date;$("dtime").value=x.time||"";cm=x.mood;$("dtitle").value=x.title||"";$("dtext").value=x.text;$("dcomp").hidden=false;scrollTo(0,0)}
+ else if(d.dd){if(!confirm("Delete this page?"))return;D=D.filter(y=>y.id!=d.dd);if(dcol)dcol.doc(d.dd).delete().catch(()=>{});lsave()}
+ render();renderD()});
+$("q").oninput=e=>{q=e.target.value;LIM=60;clearTimeout(qt);qt=setTimeout(render,150)};$("so").onchange=e=>{sort=e.target.value;LIM=60;render()};
+
+const tx=(m,t,v)=>{mode=m;$("dt").textContent=t;$("ta").value=v;$("tx").showModal()};
+$("bk").onclick=()=>{const b={};for(const k in B){const x={...B[k]};delete x.img;if(x.pdf=="local")delete x.pdf;b[k]=x}tx("bk","Press OK to copy, then keep this text safe (send it to yourself). It holds books, genres, topics and diary. Covers are not included.",JSON.stringify({B:b,M,D}))};
+$("rs").onclick=()=>tx("rs","Paste your backup text, then press OK.","");
+$("bl").onclick=()=>tx("bl","One book per line: Title - Author - Genre - Topic - Note (everything after the title is optional). All go to Want to read.","");
+$("dx").onclick=()=>$("tx").close();
+$("dok").onclick=()=>{const v=$("ta").value;if(mode=="bk"){try{navigator.clipboard.writeText(v)}catch(e){}$("ta").select();return}if(!CE())return;const ids=[];let skip=0;
+ try{if(mode=="rs"){const d=JSON.parse(v);Object.assign(B,d.B||{});ids.push(...Object.keys(d.B||{}));if(d.M){M.gx=[...new Set([...M.gx,...(d.M.gx||[])])];for(const g in d.M.tp||{})M.tp[g]=[...new Set([...(M.tp[g]||[]),...d.M.tp[g]])]}(d.D||[]).forEach(x=>{if(!D.some(y=>y.id==x.id)){D.push(x);if(dcol)dcol.doc(x.id).set(x).catch(()=>{})}})}
+ else{const seen=new Set(Object.values(B).map(dk));v.split("\n").forEach(l=>{l=l.trim();if(!l)return;const p=l.split(" - ").map(x=>x.trim()),k=dk({t:p[0],a:p[1]});if(seen.has(k)){skip++;return}seen.add(k);const id=nid();B[id]={id,ts:Date.now(),t:p[0],a:p[1]||"",g:p[2]||"",tp:p[3]||"",y:"",status:"want",rt:0,pg:0,pt:0,nt:p.slice(4).join(" - ")};ids.push(id);if(p[2]&&p[3]){M.tp[p[2]]=M.tp[p[2]]||[];if(!M.tp[p[2]].includes(p[3]))M.tp[p[2]].push(p[3])}})}}
+ catch(e){alert("Could not read that text");return}
+ saveM();if(DB&&CAN)ids.forEach(id=>qset(()=>col.doc(id).set({...B[id],custom:true})));$("tx").close();render();renderD();toast(mode=="bl"?`✅ Added ${ids.length} new books · skipped ${skip} already in your library`:`✅ Restored ${ids.length} books`)};
+
+$("dd").onclick=()=>{if(!CE())return;const g={},rm=[];Object.values(B).forEach(b=>{const k=dk(b);(g[k]=g[k]||[]).push(b)});
+ const sc=b=>(b.status?2:0)+(b.img?2:0)+(b.pdf?2:0)+(b.nt?1:0)+(b.rt?1:0)+(b.pg?1:0)+(b.a?1:0);
+ for(const k in g){const l=g[k];if(l.length<2)continue;l.sort((a,b)=>sc(b)-sc(a)||(a.ts||0)-(b.ts||0));rm.push(...l.slice(1))}
+ if(!rm.length){toast("No duplicates found 👍");return}
+ if(!confirm("Found "+rm.length+" duplicate books. Delete them? (the most complete copy of each is kept)"))return;
+ rm.forEach(b=>{delete B[b.id];idbDel("img:"+b.id).catch(()=>{});if(DB&&CAN)qset(()=>col.doc(b.id).delete())});lsave();render();toast("🧹 Removed "+rm.length+" duplicates")};
+const td=()=>{const d=new Date(),p=n=>String(n).padStart(2,"0");return[d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate()),p(d.getHours())+":"+p(d.getMinutes())]};
+function clearD(){dEdit=null;const[a,b]=td();$("ddate").value=a;$("dtime").value=b;$("dtitle").value="";$("dtext").value="";cm="normal"}
+function renderD(){
+ $("dmoods").innerHTML=MO.map(m=>`<button class="b ${cm==m[0]?"on":""}" data-m="${m[0]}">${m[1]} ${m[2]}</button>`).join("");
+ $("dfilt").innerHTML=[["All","📓","All pages"],...MO].map(m=>`<button class="b ${dm==m[0]?"on":""}" data-dm="${m[0]}">${m[1]} ${m[2]}</button>`).join("");
+ const l=dlist(),all=dsort();if(dpi>=l.length)dpi=Math.max(0,l.length-1);
+ if(!l.length){$("dbook").innerHTML=`<div class="dpg"><h3>📓 My Diary</h3><p>${D.length?"No pages for this mood yet.":"This diary is empty. Tap “✍️ Write a new page” to start Day 1."}</p></div>`;return}
+ const e=l[dpi],m=MO.find(x=>x[0]==e.mood)||["","",""];
+ $("dbook").innerHTML=`<div class="dpg"><div class="dh"><span>Day ${all.indexOf(e)+1} · ${esc(e.date)} ${esc(e.time||"")}</span><span>${m[1]} ${m[2]}</span></div>${e.title?`<h3>${esc(e.title)}</h3>`:""}<p>${esc(e.text)}</p><div class="dh" style="margin-top:14px"><span>Page ${dpi+1} / ${l.length}</span><span><button class="b" data-de="${e.id}">✏️ Edit</button> <button class="b" data-dd="${e.id}">🗑️</button></span></div></div>`;
+}
+$("dsv").onclick=()=>{const text=$("dtext").value.trim();if(!text)return;const id=dEdit||nid();const e={id,date:$("ddate").value,time:$("dtime").value,mood:cm,title:$("dtitle").value.trim(),text};D=D.filter(x=>x.id!=id);D.push(e);if(dcol)dcol.doc(id).set(e).catch(()=>{});lsave();dm="All";dpi=dlist().findIndex(x=>x.id==id);$("dcomp").hidden=true;clearD();renderD()};
+$("dcl").onclick=()=>{$("dcomp").hidden=true;clearD();renderD()};
+
+(async()=>{try{const d=await idb(),s=d.transaction("f").objectStore("f");const ks=await new Promise(r=>{const x=s.getAllKeys();x.onsuccess=()=>r(x.result)}),vs=await new Promise(r=>{const x=s.getAll();x.onsuccess=()=>r(x.result)});ks.forEach((k,i)=>{if(typeof k=="string"&&k.startsWith("img:")&&B[k.slice(4)])B[k.slice(4)].img=vs[i]});render()}catch(e){}})();
+(async()=>{const SY=t=>{$("sync").textContent=t;$("sync").dataset.base=t};
+ try{if(!window.claude){SY("Sync off · saved only in this browser. Open the claude.ai link to sync.");return}
+ const u=await claude.use("user");CAN=u?u.canEdit():false;DB=await claude.use("db");
+ if(!DB){SY("Sync off · saved only in this browser");return}
+ SY(CAN?"Sync on · editor":"Sync on · view only");col=DB.collection("books");let first=true;
+ col.onSnapshot(s=>{if(s.empty&&CAN&&first){first=false;saveM();Object.keys(B).forEach(id=>qset(()=>col.doc(id).set({...B[id],custom:true})));render();return}first=false;
+  s.docChanges().forEach(c=>{const r=c.doc.data();if(!r)return;if(r.meta){M.gx=r.gx||[];M.tp=r.tp||M.tp;return}if(c.type=="removed"){delete B[c.doc.id];return}if(r.custom&&r.t)B[r.id]=r});rq()},()=>{});
+ let uid=null;try{uid=u&&await u.id()}catch(e){}
+ if(uid){dcol=DB.collection("data/users/"+uid);let f2=true;dcol.onSnapshot(s=>{if(s.empty&&f2&&D.length){f2=false;D.forEach(x=>dcol.doc(x.id).set(x).catch(()=>{}));return}f2=false;D=s.docs.map(d=>d.data()).filter(Boolean);renderD()},()=>{})}
+ }catch(e){}})();
+clearD();render();renderD();
+</script></body></html>

@@ -1,0 +1,6 @@
+{
+  "name": "Al Thahazeeb Noor Rayan – Personal Archive",
+  "description": "A personal reading archive, bookshelf, and private daily diary with cross-device cloud sync and backup/restore.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

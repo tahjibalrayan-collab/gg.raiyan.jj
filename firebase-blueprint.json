@@ -1,0 +1,184 @@
+{
+  "entities": {
+    "Book": {
+      "title": "Book",
+      "description": "A book entry in the personal archive library.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "ownerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "t": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "description": "Book title"
+        },
+        "a": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Author name"
+        },
+        "g": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Book genre"
+        },
+        "tp": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Topic or sub-category"
+        },
+        "y": {
+          "type": "string",
+          "maxLength": 32,
+          "description": "Publication year"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["", "want", "reading", "read"]
+        },
+        "rt": {
+          "type": "number",
+          "description": "Star rating from 0 to 5"
+        },
+        "pt": {
+          "type": "number",
+          "description": "Total pages"
+        },
+        "pg": {
+          "type": "number",
+          "description": "Pages read"
+        },
+        "nt": {
+          "type": "string",
+          "maxLength": 5000,
+          "description": "Personal reading notes"
+        },
+        "img": {
+          "type": "string",
+          "maxLength": 250000,
+          "description": "Resized cover image data URL"
+        },
+        "pdf": {
+          "type": "string",
+          "maxLength": 2048,
+          "description": "External PDF URL or 'local'"
+        },
+        "ts": {
+          "type": "number",
+          "description": "Creation epoch timestamp"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "ownerId", "t", "status", "rt", "pt", "pg", "ts", "createdAt", "updatedAt"]
+    },
+    "LibraryMeta": {
+      "title": "LibraryMeta",
+      "description": "Custom genres and genre-to-topic taxonomy.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "gx": {
+          "type": "array",
+          "description": "Custom genre names"
+        },
+        "tp": {
+          "type": "object",
+          "description": "Genre to topic list mapping"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["ownerId", "gx", "tp", "createdAt", "updatedAt"]
+    },
+    "DiaryPage": {
+      "title": "DiaryPage",
+      "description": "A private daily diary entry.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "ownerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "date": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 20
+        },
+        "time": {
+          "type": "string",
+          "maxLength": 10
+        },
+        "mood": {
+          "type": "string",
+          "enum": ["good", "happy", "normal", "bad", "sad", "rainy", "worst", "best"]
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50000
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "ownerId", "date", "mood", "text", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/books/{bookId}": {
+      "schema": { "$ref": "#/entities/Book" },
+      "description": "User-owned book records"
+    },
+    "/users/{userId}/meta/{metaId}": {
+      "schema": { "$ref": "#/entities/LibraryMeta" },
+      "description": "User-owned custom genres and topics"
+    },
+    "/users/{userId}/diary/{pageId}": {
+      "schema": { "$ref": "#/entities/DiaryPage" },
+      "description": "User-owned private diary pages"
+    }
+  }
+}

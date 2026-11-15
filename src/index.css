@@ -1,0 +1,144 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-display: "Cormorant Garamond", Georgia, serif;
+    --font-sans: "Plus Jakarta Sans", "Noto Sans Bengali", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    scroll-padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Curated Atmospheric Backgrounds */
+.archive-canvas-dark {
+  background-color: #0d1017;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(45, 76, 138, 0.28), transparent 70%),
+    radial-gradient(ellipse 55% 45% at 88% 14%, rgba(182, 132, 62, 0.12), transparent 65%),
+    radial-gradient(ellipse 50% 45% at 12% 80%, rgba(35, 62, 108, 0.15), transparent 65%),
+    linear-gradient(180deg, #0d1017 0%, #111621 52%, #0c0f15 100%);
+}
+
+.archive-canvas-light {
+  background-color: #f3efe7;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(47, 74, 138, 0.11), transparent 70%),
+    radial-gradient(ellipse 55% 45% at 88% 16%, rgba(176, 128, 60, 0.10), transparent 65%),
+    radial-gradient(ellipse 50% 45% at 10% 85%, rgba(65, 92, 140, 0.07), transparent 65%),
+    linear-gradient(180deg, #f5f1e8 0%, #ede7dc 55%, #f4f0e7 100%);
+}
+
+/* Subtle architectural grid texture */
+.archive-grid-overlay {
+  background-size: 36px 36px;
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+}
+
+/* Bookshelf realistic wood plank & spine styling */
+.bookshelf-bay {
+  background: linear-gradient(180deg, rgba(24, 17, 12, 0.92) 0%, rgba(35, 24, 17, 0.96) 100%);
+  box-shadow:
+    inset 0 18px 34px -12px rgba(0, 0, 0, 0.75),
+    inset 0 -10px 18px -8px rgba(0, 0, 0, 0.55);
+}
+
+html:not(.dark) .bookshelf-bay {
+  background: linear-gradient(180deg, #e7dfd1 0%, #ddd2c0 100%);
+  box-shadow:
+    inset 0 14px 26px -14px rgba(58, 40, 20, 0.25),
+    inset 0 -8px 14px -8px rgba(58, 40, 20, 0.2);
+}
+
+.bookshelf-plank {
+  height: 14px;
+  background: linear-gradient(180deg, #9f7546 0%, #7a542d 55%, #54371b 100%);
+  box-shadow: 0 6px 14px -4px rgba(0, 0, 0, 0.5);
+}
+
+.spine-item {
+  writing-mode: vertical-rl;
+  transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 160ms ease;
+}
+
+.spine-item:hover {
+  transform: translateY(-10px);
+}
+
+/* Diary lined paper & 3D page turn */
+.diary-paper {
+  background-color: #fcf8ee;
+  color: #2f2519;
+  border-left: 4px double #d7c59e;
+  line-height: 29px;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 28px,
+    #e8dcc0 29px
+  );
+  transform-origin: left center;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), opacity 220ms ease;
+}
+
+.diary-paper.flip-out-left {
+  transform: perspective(1400px) rotateY(-78deg);
+  opacity: 0.15;
+}
+
+.diary-paper.flip-out-right {
+  transform-origin: right center;
+  transform: perspective(1400px) rotateY(78deg);
+  opacity: 0.15;
+}
+
+.diary-paper.flip-in-right {
+  transform-origin: right center;
+  transform: perspective(1400px) rotateY(78deg);
+  opacity: 0.15;
+}
+
+.diary-paper.flip-in-left {
+  transform: perspective(1400px) rotateY(-78deg);
+  opacity: 0.15;
+}
+
+/* Custom sleek scrollbar for bookshelf */
+.shelf-scroll::-webkit-scrollbar {
+  height: 7px;
+}
+.shelf-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.shelf-scroll::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spine-item,
+  .diary-paper {
+    transition: none;
+  }
+}
