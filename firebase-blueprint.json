@@ -5,86 +5,23 @@
       "description": "A book entry in the personal archive library.",
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 128,
-          "pattern": "^[a-zA-Z0-9_\\-]+$"
-        },
-        "ownerId": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 128
-        },
-        "t": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 300,
-          "description": "Book title"
-        },
-        "a": {
-          "type": "string",
-          "maxLength": 200,
-          "description": "Author name"
-        },
-        "g": {
-          "type": "string",
-          "maxLength": 100,
-          "description": "Book genre"
-        },
-        "tp": {
-          "type": "string",
-          "maxLength": 100,
-          "description": "Topic or sub-category"
-        },
-        "y": {
-          "type": "string",
-          "maxLength": 32,
-          "description": "Publication year"
-        },
-        "status": {
-          "type": "string",
-          "enum": ["", "want", "reading", "read"]
-        },
-        "rt": {
-          "type": "number",
-          "description": "Star rating from 0 to 5"
-        },
-        "pt": {
-          "type": "number",
-          "description": "Total pages"
-        },
-        "pg": {
-          "type": "number",
-          "description": "Pages read"
-        },
-        "nt": {
-          "type": "string",
-          "maxLength": 5000,
-          "description": "Personal reading notes"
-        },
-        "img": {
-          "type": "string",
-          "maxLength": 250000,
-          "description": "Resized cover image data URL"
-        },
-        "pdf": {
-          "type": "string",
-          "maxLength": 2048,
-          "description": "External PDF URL or 'local'"
-        },
-        "ts": {
-          "type": "number",
-          "description": "Creation epoch timestamp"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time"
-        }
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "ownerId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "t": { "type": "string", "minLength": 1, "maxLength": 300, "description": "Book title" },
+        "a": { "type": "string", "maxLength": 200, "description": "Author name" },
+        "g": { "type": "string", "maxLength": 100, "description": "Book genre" },
+        "tp": { "type": "string", "maxLength": 100, "description": "Topic or sub-category" },
+        "y": { "type": "string", "maxLength": 32, "description": "Publication year" },
+        "status": { "type": "string", "enum": ["", "want", "reading", "read"] },
+        "rt": { "type": "number", "description": "Star rating from 0 to 5" },
+        "pt": { "type": "number", "description": "Total pages" },
+        "pg": { "type": "number", "description": "Pages read" },
+        "nt": { "type": "string", "maxLength": 5000, "description": "Personal reading notes" },
+        "img": { "type": "string", "maxLength": 250000, "description": "Resized cover image data URL" },
+        "pdf": { "type": "string", "maxLength": 2048, "description": "External PDF URL or 'local'" },
+        "ts": { "type": "number", "description": "Creation epoch timestamp" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["id", "ownerId", "t", "status", "rt", "pt", "pg", "ts", "createdAt", "updatedAt"]
     },
@@ -93,27 +30,11 @@
       "description": "Custom genres and genre-to-topic taxonomy.",
       "type": "object",
       "properties": {
-        "ownerId": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 128
-        },
-        "gx": {
-          "type": "array",
-          "description": "Custom genre names"
-        },
-        "tp": {
-          "type": "object",
-          "description": "Genre to topic list mapping"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time"
-        }
+        "ownerId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "gx": { "type": "array", "description": "Custom genre names" },
+        "tp": { "type": "object", "description": "Genre to topic list mapping" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["ownerId", "gx", "tp", "createdAt", "updatedAt"]
     },
@@ -122,49 +43,74 @@
       "description": "A private daily diary entry.",
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 128,
-          "pattern": "^[a-zA-Z0-9_\\-]+$"
-        },
-        "ownerId": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 128
-        },
-        "date": {
-          "type": "string",
-          "minLength": 4,
-          "maxLength": 20
-        },
-        "time": {
-          "type": "string",
-          "maxLength": 10
-        },
-        "mood": {
-          "type": "string",
-          "enum": ["good", "happy", "normal", "bad", "sad", "rainy", "worst", "best"]
-        },
-        "title": {
-          "type": "string",
-          "maxLength": 300
-        },
-        "text": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 50000
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time"
-        }
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "ownerId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "date": { "type": "string", "minLength": 4, "maxLength": 20 },
+        "time": { "type": "string", "maxLength": 10 },
+        "mood": { "type": "string", "enum": ["good", "happy", "normal", "bad", "sad", "rainy", "worst", "best"] },
+        "title": { "type": "string", "maxLength": 300 },
+        "text": { "type": "string", "minLength": 1, "maxLength": 50000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["id", "ownerId", "date", "mood", "text", "createdAt", "updatedAt"]
+    },
+    "BookAnnotation": {
+      "title": "BookAnnotation",
+      "description": "Line-by-line highlights, margin notes, explanations, and ink marks for a PDF book.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "ownerId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "bookId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "page": { "type": "number" },
+        "kind": { "type": "string", "enum": ["highlight", "note", "ink"] },
+        "color": { "type": "string", "enum": ["green", "blue", "red", "yellow"] },
+        "quote": { "type": "string", "maxLength": 5000 },
+        "explanation": { "type": "string", "maxLength": 10000 },
+        "rects": { "type": "array" },
+        "points": { "type": "array" },
+        "ts": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "ownerId", "bookId", "page", "kind", "color", "ts", "createdAt", "updatedAt"]
+    },
+    "MediaTrack": {
+      "title": "MediaTrack",
+      "description": "Synced audio track entry in the personal music vault.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "ownerId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "artist": { "type": "string", "maxLength": 200 },
+        "album": { "type": "string", "maxLength": 200 },
+        "folder": { "type": "string", "maxLength": 120 },
+        "url": { "type": "string", "maxLength": 2048 },
+        "duration": { "type": "number" },
+        "ts": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "ownerId", "title", "url", "ts", "createdAt", "updatedAt"]
+    },
+    "MediaPhoto": {
+      "title": "MediaPhoto",
+      "description": "Synced photo entry in the personal photo vault.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "ownerId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "album": { "type": "string", "maxLength": 120 },
+        "url": { "type": "string", "maxLength": 2048 },
+        "favorite": { "type": "boolean" },
+        "ts": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "ownerId", "title", "url", "ts", "createdAt", "updatedAt"]
     }
   },
   "firestore": {
@@ -179,6 +125,18 @@
     "/users/{userId}/diary/{pageId}": {
       "schema": { "$ref": "#/entities/DiaryPage" },
       "description": "User-owned private diary pages"
+    },
+    "/users/{userId}/annotations/{annId}": {
+      "schema": { "$ref": "#/entities/BookAnnotation" },
+      "description": "User-owned PDF highlights, margin notes, and explanations"
+    },
+    "/users/{userId}/tracks/{trackId}": {
+      "schema": { "$ref": "#/entities/MediaTrack" },
+      "description": "User-owned cloud-synced audio tracks"
+    },
+    "/users/{userId}/photos/{photoId}": {
+      "schema": { "$ref": "#/entities/MediaPhoto" },
+      "description": "User-owned cloud-synced photo items"
     }
   }
 }

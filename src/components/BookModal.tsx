@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Book, BookStatus, DEFAULT_GENRES, LibraryMeta, STATUS_LABELS } from '../types';
-import { idbDelete, idbGet, idbPut } from '../lib/idb';
+import { idbDelete, idbPut } from '../lib/idb';
 import { nid } from '../lib/archiveUtils';
 import { FileText, Image as ImageIcon, Link as LinkIcon, Trash2, X } from 'lucide-react';
 
@@ -14,6 +14,7 @@ interface BookModalProps {
   onClose: () => void;
   onSave: (book: Book) => void;
   onDelete: (bookId: string) => void;
+  onOpenReader: (book: Book) => void;
   onToast: (msg: string) => void;
 }
 
@@ -27,6 +28,7 @@ export const BookModal: React.FC<BookModalProps> = ({
   onClose,
   onSave,
   onDelete,
+  onOpenReader,
   onToast,
 }) => {
   const [draftId, setDraftId] = useState('');
@@ -140,28 +142,27 @@ export const BookModal: React.FC<BookModalProps> = ({
     onToast('PDF link attached (syncs across devices)');
   };
 
-  const handleOpenPdf = async () => {
+  const handleOpenPdf = () => {
     if (!pdf) return;
-    if (pdf === 'local') {
-      const blob = await idbGet<Blob>(draftId);
-      if (!blob) {
-        onToast('This local PDF was saved only on the device where it was added.');
-        return;
-      }
-      const url = URL.createObjectURL(blob);
-      const aEl = document.createElement('a');
-      aEl.href = url;
-      aEl.download = `${t.trim() || 'book'}.pdf`;
-      aEl.target = '_blank';
-      aEl.rel = 'noopener noreferrer';
-      aEl.click();
-    } else {
-      const aEl = document.createElement('a');
-      aEl.href = pdf;
-      aEl.target = '_blank';
-      aEl.rel = 'noopener noreferrer';
-      aEl.click();
-    }
+    const currentDraft: Book = {
+      id: draftId,
+      t: t.trim() || 'Untitled Book',
+      a: a.trim(),
+      g: g.trim(),
+      tp: tp.trim(),
+      y: y.trim(),
+      status,
+      rt,
+      pt: Math.max(0, Number(pt) || 0),
+      pg: Math.max(0, Number(pg) || 0),
+      nt,
+      img,
+      pdf,
+      ts: book?.ts || Date.now(),
+    };
+    onSave(currentDraft);
+    onClose();
+    onOpenReader(currentDraft);
   };
 
   const handleSave = (e: React.FormEvent) => {

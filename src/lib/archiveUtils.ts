@@ -1,4 +1,16 @@
-import { Book, BookStatus, DiaryMood, DiaryPage, LibraryMeta } from '../types';
+import {
+  Book,
+  BookAnnotation,
+  BookStatus,
+  DiaryMood,
+  DiaryPage,
+  HighlightColor,
+  LibraryMeta,
+  MediaPhoto,
+  MediaTrack,
+  NormPoint,
+  NormRect,
+} from '../types';
 
 export function nid(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
@@ -61,6 +73,7 @@ const VALID_MOODS = new Set<DiaryMood>([
   'worst',
   'best',
 ]);
+const VALID_COLORS = new Set<HighlightColor>(['green', 'blue', 'red', 'yellow']);
 
 export function sanitizeBook(raw: Partial<Book>, fallbackId?: string): Book {
   const id = sanitizeId(raw.id || fallbackId);
@@ -130,4 +143,132 @@ export function sanitizeMeta(raw?: Partial<LibraryMeta>): LibraryMeta {
     }
   }
   return { gx, tp };
+}
+
+export function sanitizeAnnotation(
+  raw: Partial<BookAnnotation>,
+  fallbackId?: string
+): BookAnnotation {
+  const id = sanitizeId(raw.id || fallbackId);
+  const bookId = sanitizeId(raw.bookId);
+  const color: HighlightColor = VALID_COLORS.has(raw.color as HighlightColor)
+    ? (raw.color as HighlightColor)
+    : 'yellow';
+  const kind: BookAnnotation['kind'] =
+    raw.kind === 'note' || raw.kind === 'ink' ? raw.kind : 'highlight';
+  const rects: NormRect[] | undefined = Array.isArray(raw.rects)
+    ? raw.rects.slice(0, 120).map((r) => ({
+        x: Number(r.x) || 0,
+        y: Number(r.y) || 0,
+        w: Number(r.w) || 0,
+        h: Number(r.h) || 0,
+      }))
+    : undefined;
+  const points: NormPoint[] | undefined = Array.isArray(raw.points)
+    ? raw.points.slice(0, 600).map((p) => ({
+        x: Number(p.x) || 0,
+        y: Number(p.y) || 0,
+      }))
+    : undefined;
+
+  return {
+    id,
+    bookId,
+    page: Math.min(50000, Math.max(1, Math.round(Number(raw.page) || 1))),
+    kind,
+    color,
+    quote: raw.quote ? String(raw.quote).slice(0, 5000) : '',
+    explanation: raw.explanation ? String(raw.explanation).slice(0, 10000) : '',
+    rects,
+    points,
+    ts: Number(raw.ts) > 0 ? Number(raw.ts) : Date.now(),
+  };
+}
+
+export function sanitizeMediaTrack(raw: Partial<MediaTrack>, fallbackId?: string): MediaTrack {
+  const id = sanitizeId(raw.id || fallbackId);
+  return {
+    id,
+    title: String(raw.title || 'Untitled Track').trim().slice(0, 300) || 'Untitled Track',
+    artist: String(raw.artist || '').trim().slice(0, 200),
+    album: String(raw.album || '').trim().slice(0, 200),
+    folder: String(raw.folder || 'General').trim().slice(0, 120) || 'General',
+    source: raw.source === 'url' ? 'url' : 'local',
+    url: String(raw.url || '').trim().slice(0, 2048),
+    duration: Math.max(0, Number(raw.duration) || 0),
+    size: Number(raw.size) || undefined,
+    ts: Number(raw.ts) > 0 ? Number(raw.ts) : Date.now(),
+  };
+}
+
+export function sanitizeMediaPhoto(raw: Partial<MediaPhoto>, fallbackId?: string): MediaPhoto {
+  const id = sanitizeId(raw.id || fallbackId);
+  return {
+    id,
+    title: String(raw.title || 'Untitled Photo').trim().slice(0, 300) || 'Untitled Photo',
+    album: String(raw.album || 'All Photos').trim().slice(0, 120) || 'All Photos',
+    source: raw.source === 'url' ? 'url' : 'local',
+    url: String(raw.url || '').trim().slice(0, 2048),
+    favorite: Boolean(raw.favorite),
+    size: Number(raw.size) || undefined,
+    ts: Number(raw.ts) > 0 ? Number(raw.ts) : Date.now(),
+  };
+}
+
+export function formatBytes(bytes: number): string {
+  if (!bytes || bytes <= 0) return '0 B';
+  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.min(units.length - 1, Math.floor(Math.log(bytes) / Math.log(1024)));
+  const val = bytes / Math.pow(1024, i);
+  return `${val >= 10 ? val.toFixed(0) : val.toFixed(1)} ${units[i]}`;
+}
+
+export function formatDuration(sec: number): string {
+  if (!sec || !Number.isFinite(sec)) return '0:00';
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+export function createPhotoThumbnail(file: Blob, maxSize = 320): Promise<Blob | undefined> {
+  return new Promise((resolve) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+      const w = Math.max(1, Math.round(img.width * scale));
+      const h = Math.max(1, Math.round(img.height * scale));
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        URL.revokeObjectURL(url);
+        resolve(undefined);
+        return;
+      }
+      ctx.drawImage(img, 0, 0, w, h);
+      canvas.toBlob(
+        (blob) => {
+          URL.revokeObjectURL(url);
+          resolve(blob || undefined);
+        },
+        'image/jpeg',
+        0.76
+      );
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      resolve(undefined);
+    };
+    img.src = url;
+  });
+}
+
+export function toInAppEmbedUrl(rawUrl: string): string {
+  const driveMatch = rawUrl.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
+  if (driveMatch && driveMatch[1]) {
+    return `https://drive.google.com/file/d/${driveMatch[1]}/preview`;
+  }
+  return rawUrl;
 }

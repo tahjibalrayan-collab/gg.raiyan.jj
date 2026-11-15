@@ -7,16 +7,15 @@ import {
   STATUS_LABELS,
 } from '../types';
 import { computeHue } from '../lib/archiveUtils';
-import { idbGet } from '../lib/idb';
 import {
   BookOpen,
   CopyCheck,
   Download,
+  Edit3,
   FileText,
   FolderPlus,
   Plus,
   Search,
-  Sparkles,
   Upload,
 } from 'lucide-react';
 
@@ -39,6 +38,8 @@ interface LibraryViewProps {
   onLoadMore: () => void;
   onAddBook: () => void;
   onEditBook: (id: string) => void;
+  onOpenReader: (book: Book) => void;
+  annotationCounts: Record<string, number>;
   onToggleStatus: (book: Book, status: Exclude<BookStatus, ''>) => void;
   onAddGenre: () => void;
   onAddTopic: () => void;
@@ -46,7 +47,6 @@ interface LibraryViewProps {
   onOpenBackup: () => void;
   onOpenRestore: () => void;
   onRemoveDuplicates: () => void;
-  onToast: (msg: string) => void;
 }
 
 export const LibraryView: React.FC<LibraryViewProps> = ({
@@ -66,6 +66,8 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
   onLoadMore,
   onAddBook,
   onEditBook,
+  onOpenReader,
+  annotationCounts,
   onToggleStatus,
   onAddGenre,
   onAddTopic,
@@ -73,7 +75,6 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
   onOpenBackup,
   onOpenRestore,
   onRemoveDuplicates,
-  onToast,
 }) => {
   const [hoveredBook, setHoveredBook] = useState<{
     book: Book;
@@ -137,26 +138,11 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
 
   const visibleBooks = filteredBooks.slice(0, limit);
 
-  const openBookPdf = async (book: Book) => {
-    if (!book.pdf) return;
-    if (book.pdf === 'local') {
-      const blob = await idbGet<Blob>(book.id);
-      if (!blob) {
-        onToast('This local PDF was saved only on the device where it was added.');
-        return;
-      }
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.target = '_blank';
-      a.download = `${book.t || 'book'}.pdf`;
-      a.click();
+  const handleBookPrimaryClick = (book: Book) => {
+    if (book.pdf) {
+      onOpenReader(book);
     } else {
-      const a = document.createElement('a');
-      a.href = book.pdf;
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-      a.click();
+      onEditBook(book.id);
     }
   };
 
@@ -303,7 +289,7 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
                 <button
                   key={b.id}
                   type="button"
-                  onClick={() => onEditBook(b.id)}
+                  onClick={() => handleBookPrimaryClick(b)}
                   onMouseEnter={(e) =>
                     setHoveredBook({ book: b, x: e.clientX, y: e.clientY })
                   }
@@ -395,17 +381,18 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
         {visibleBooks.map((b) => {
           const c = computeHue(b.g || b.t);
           const progressPct = b.pt > 0 ? Math.min(100, ((b.pg || 0) / b.pt) * 100) : 0;
+          const noteCount = annotationCounts[b.id] || 0;
 
           return (
             <article key={b.id} className="flex flex-col gap-2 group">
               <div
-                onClick={() => onEditBook(b.id)}
+                onClick={() => handleBookPrimaryClick(b)}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    onEditBook(b.id);
+                    handleBookPrimaryClick(b);
                   }
                 }}
                 className="relative aspect-[2/3] rounded-l-[3px] rounded-r-lg p-3 flex flex-col justify-between text-white cursor-pointer overflow-hidden shadow-[inset_6px_0_10px_-4px_rgba(0,0,0,0.45),0_10px_20px_-10px_rgba(0,0,0,0.5)] group-hover:-translate-y-1 transition-transform duration-150"
@@ -435,7 +422,7 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
               <div className="space-y-0.5 min-w-0">
                 <button
                   type="button"
-                  onClick={() => onEditBook(b.id)}
+                  onClick={() => handleBookPrimaryClick(b)}
                   className="text-left text-sm font-semibold text-stone-900 dark:text-slate-100 hover:text-[#26428B] dark:hover:text-[#D6A456] transition-colors line-clamp-2 leading-snug"
                 >
                   {b.t}
@@ -456,10 +443,11 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
                   {b.y && <span className="font-mono-num"> · {b.y}</span>}
                 </div>
 
-                {(b.g || b.tp) && (
+                {(b.g || b.tp || noteCount > 0) && (
                   <div className="text-[11px] text-stone-500 dark:text-slate-400 truncate">
                     {b.g}
                     {b.tp ? ` › ${b.tp}` : ''}
+                    {noteCount > 0 ? `${b.g ? ' · ' : ''}${noteCount} marks` : ''}
                   </div>
                 )}
 
@@ -505,13 +493,21 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
                 {b.pdf && (
                   <button
                     type="button"
-                    onClick={() => void openBookPdf(b)}
-                    className="inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium border border-stone-300 dark:border-slate-700 bg-white/80 dark:bg-[#1E2534] text-stone-800 dark:text-slate-200 hover:bg-stone-100 dark:hover:bg-slate-700 whitespace-nowrap"
+                    onClick={() => onOpenReader(b)}
+                    className="inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-semibold bg-[#26428B]/10 dark:bg-[#D6A456]/15 border border-[#26428B]/30 dark:border-[#D6A456]/40 text-[#26428B] dark:text-[#D6A456] hover:opacity-85 whitespace-nowrap"
                   >
                     <FileText className="w-3 h-3" />
-                    PDF
+                    Read PDF
                   </button>
                 )}
+                <button
+                  type="button"
+                  onClick={() => onEditBook(b.id)}
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium border border-stone-300/70 dark:border-slate-700/70 bg-white/60 dark:bg-[#171C27] text-stone-700 dark:text-slate-300 hover:bg-white dark:hover:bg-[#1E2534] whitespace-nowrap"
+                >
+                  <Edit3 className="w-3 h-3" />
+                  Edit
+                </button>
               </div>
             </article>
           );

@@ -72,6 +72,54 @@ service cloud.firestore {
         && data.updatedAt is timestamp;
     }
 
+    function isValidAnnotation(data, userId, annId) {
+      return data.keys().hasAll(['id', 'ownerId', 'bookId', 'page', 'kind', 'color', 'ts', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['id', 'ownerId', 'bookId', 'page', 'kind', 'color', 'quote', 'explanation', 'rects', 'points', 'ts', 'createdAt', 'updatedAt'])
+        && data.id is string && data.id == annId
+        && data.ownerId is string && data.ownerId == userId && data.ownerId == request.auth.uid
+        && isValidId(data.bookId)
+        && data.page is number && data.page >= 1 && data.page <= 50000
+        && data.kind is string && data.kind in ['highlight', 'note', 'ink']
+        && data.color is string && data.color in ['green', 'blue', 'red', 'yellow']
+        && (!('quote' in data) || (data.quote is string && data.quote.size() <= 5000))
+        && (!('explanation' in data) || (data.explanation is string && data.explanation.size() <= 10000))
+        && (!('rects' in data) || (data.rects is list && data.rects.size() <= 120 && (data.rects.size() == 0 || data.rects[0] is map)))
+        && (!('points' in data) || (data.points is list && data.points.size() <= 600 && (data.points.size() == 0 || data.points[0] is map)))
+        && data.ts is number && data.ts >= 0
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidTrack(data, userId, trackId) {
+      return data.keys().hasAll(['id', 'ownerId', 'title', 'url', 'ts', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['id', 'ownerId', 'title', 'artist', 'album', 'folder', 'url', 'duration', 'ts', 'createdAt', 'updatedAt'])
+        && data.id is string && data.id == trackId
+        && data.ownerId is string && data.ownerId == userId && data.ownerId == request.auth.uid
+        && data.title is string && data.title.size() >= 1 && data.title.size() <= 300
+        && (!('artist' in data) || (data.artist is string && data.artist.size() <= 200))
+        && (!('album' in data) || (data.album is string && data.album.size() <= 200))
+        && (!('folder' in data) || (data.folder is string && data.folder.size() <= 120))
+        && data.url is string && data.url.size() >= 1 && data.url.size() <= 2048
+        && (!('duration' in data) || (data.duration is number && data.duration >= 0))
+        && data.ts is number && data.ts >= 0
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidPhoto(data, userId, photoId) {
+      return data.keys().hasAll(['id', 'ownerId', 'title', 'url', 'ts', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['id', 'ownerId', 'title', 'album', 'url', 'favorite', 'ts', 'createdAt', 'updatedAt'])
+        && data.id is string && data.id == photoId
+        && data.ownerId is string && data.ownerId == userId && data.ownerId == request.auth.uid
+        && data.title is string && data.title.size() >= 1 && data.title.size() <= 300
+        && (!('album' in data) || (data.album is string && data.album.size() <= 120))
+        && data.url is string && data.url.size() >= 1 && data.url.size() <= 2048
+        && (!('favorite' in data) || data.favorite is bool)
+        && data.ts is number && data.ts >= 0
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
     match /users/{userId}/books/{bookId} {
       allow get: if isOwner(userId) && isValidId(userId) && isValidId(bookId);
       allow list: if isOwner(userId) && isValidId(userId) && existing().ownerId == request.auth.uid;
@@ -88,6 +136,7 @@ service cloud.firestore {
         && incoming().updatedAt == request.time
         && (
           incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt']) ||
+          incoming().diff(existing()).affectedKeys().hasOnly(['pg', 'updatedAt']) ||
           incoming().diff(existing()).affectedKeys().hasOnly(['t', 'a', 'g', 'tp', 'y', 'status', 'rt', 'pt', 'pg', 'nt', 'img', 'pdf', 'updatedAt'])
         );
       allow delete: if isOwner(userId) && isValidId(userId) && isValidId(bookId)
@@ -126,6 +175,64 @@ service cloud.firestore {
         && incoming().updatedAt == request.time
         && incoming().diff(existing()).affectedKeys().hasOnly(['date', 'time', 'mood', 'title', 'text', 'updatedAt']);
       allow delete: if isOwner(userId) && isValidId(userId) && isValidId(pageId)
+        && existing().ownerId == request.auth.uid;
+    }
+
+    match /users/{userId}/annotations/{annId} {
+      allow get: if isOwner(userId) && isValidId(userId) && isValidId(annId);
+      allow list: if isOwner(userId) && isValidId(userId) && existing().ownerId == request.auth.uid;
+      allow create: if isOwner(userId) && isValidId(userId) && isValidId(annId)
+        && isValidAnnotation(incoming(), userId, annId)
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+      allow update: if isOwner(userId) && isValidId(userId) && isValidId(annId)
+        && isValidAnnotation(incoming(), userId, annId)
+        && incoming().id == existing().id
+        && incoming().ownerId == existing().ownerId
+        && incoming().bookId == existing().bookId
+        && incoming().ts == existing().ts
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly(['color', 'quote', 'explanation', 'rects', 'points', 'updatedAt']);
+      allow delete: if isOwner(userId) && isValidId(userId) && isValidId(annId)
+        && existing().ownerId == request.auth.uid;
+    }
+
+    match /users/{userId}/tracks/{trackId} {
+      allow get: if isOwner(userId) && isValidId(userId) && isValidId(trackId);
+      allow list: if isOwner(userId) && isValidId(userId) && existing().ownerId == request.auth.uid;
+      allow create: if isOwner(userId) && isValidId(userId) && isValidId(trackId)
+        && isValidTrack(incoming(), userId, trackId)
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+      allow update: if isOwner(userId) && isValidId(userId) && isValidId(trackId)
+        && isValidTrack(incoming(), userId, trackId)
+        && incoming().id == existing().id
+        && incoming().ownerId == existing().ownerId
+        && incoming().ts == existing().ts
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly(['title', 'artist', 'album', 'folder', 'url', 'duration', 'updatedAt']);
+      allow delete: if isOwner(userId) && isValidId(userId) && isValidId(trackId)
+        && existing().ownerId == request.auth.uid;
+    }
+
+    match /users/{userId}/photos/{photoId} {
+      allow get: if isOwner(userId) && isValidId(userId) && isValidId(photoId);
+      allow list: if isOwner(userId) && isValidId(userId) && existing().ownerId == request.auth.uid;
+      allow create: if isOwner(userId) && isValidId(userId) && isValidId(photoId)
+        && isValidPhoto(incoming(), userId, photoId)
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+      allow update: if isOwner(userId) && isValidId(userId) && isValidId(photoId)
+        && isValidPhoto(incoming(), userId, photoId)
+        && incoming().id == existing().id
+        && incoming().ownerId == existing().ownerId
+        && incoming().ts == existing().ts
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly(['title', 'album', 'url', 'favorite', 'updatedAt']);
+      allow delete: if isOwner(userId) && isValidId(userId) && isValidId(photoId)
         && existing().ownerId == request.auth.uid;
     }
   }

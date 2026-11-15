@@ -43,6 +43,94 @@ export interface DiaryPage {
   text: string;
 }
 
+export type HighlightColor = 'green' | 'blue' | 'red' | 'yellow';
+
+export interface NormRect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface NormPoint {
+  x: number;
+  y: number;
+}
+
+export interface BookAnnotation {
+  id: string;
+  ownerId?: string;
+  bookId: string;
+  page: number;
+  kind: 'highlight' | 'note' | 'ink';
+  color: HighlightColor;
+  quote?: string;
+  explanation?: string;
+  rects?: NormRect[];
+  points?: NormPoint[];
+  ts: number;
+}
+
+export interface MediaTrack {
+  id: string;
+  ownerId?: string;
+  title: string;
+  artist: string;
+  album: string;
+  folder: string;
+  source: 'local' | 'url';
+  url: string;
+  duration: number;
+  size?: number;
+  ts: number;
+}
+
+export interface MediaPhoto {
+  id: string;
+  ownerId?: string;
+  title: string;
+  album: string;
+  source: 'local' | 'url';
+  url: string;
+  favorite: boolean;
+  size?: number;
+  ts: number;
+}
+
+export const HIGHLIGHT_COLORS: Record<
+  HighlightColor,
+  { label: string; bg: string; border: string; ink: string; swatch: string }
+> = {
+  green: {
+    label: 'Green',
+    bg: 'rgba(34, 197, 94, 0.34)',
+    border: '#16a34a',
+    ink: '#15803d',
+    swatch: '#22c55e',
+  },
+  blue: {
+    label: 'Blue',
+    bg: 'rgba(59, 130, 246, 0.34)',
+    border: '#2563eb',
+    ink: '#1d4ed8',
+    swatch: '#3b82f6',
+  },
+  red: {
+    label: 'Red',
+    bg: 'rgba(239, 68, 68, 0.34)',
+    border: '#dc2626',
+    ink: '#b91c1c',
+    swatch: '#ef4444',
+  },
+  yellow: {
+    label: 'Yellow',
+    bg: 'rgba(234, 179, 8, 0.40)',
+    border: '#ca8a04',
+    ink: '#a16207',
+    swatch: '#eab308',
+  },
+};
+
 export const DEFAULT_GENRES: string[] = [
   'Biography',
   'Science',
